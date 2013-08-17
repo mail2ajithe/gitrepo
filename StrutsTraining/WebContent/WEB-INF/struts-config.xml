@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC 
+"-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" 
+"http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+
+	<form-beans>
+		<form-bean name="helloWorldForm" type="com.magnolia.struts.form.HelloWorldForm"/>
+		<form-bean name="LoginForm" type="com.magnolia.struts.form.LoginForm"/>
+		<form-bean name="UserForm" type="com.magnolia.struts.form.UserForm"/>
+		
+		<form-bean name="DynaLoginForm" type="org.apache.struts.action.DynaActionForm">
+	        <form-property name="userName" type="java.lang.String" />
+	        <form-property name="password" type="java.lang.String" />
+	    </form-bean>
+	    
+	    <form-bean name="ValidateLoginForm" type="com.magnolia.struts.form.ValidateLoginForm"/>
+	    
+	</form-beans>
+
+	<action-mappings>
+		<action path="/helloWorld"
+			type="com.magnolia.struts.action.HelloWorldAction"
+			name="helloWorldForm">
+			<forward name="success" path="/jsp/HelloWorld.jsp"/>
+		</action>
+		
+		<action
+			path="/Welcome"
+			type="org.apache.struts.actions.ForwardAction"
+			parameter="/jsp/Welcome.jsp"/>
+			
+        <action path="/Login" input="/jsp/login.jsp" name="LoginForm"  scope="session" type="com.magnolia.struts.action.LoginAction">
+            <forward name="success" path="/jsp/success.jsp" />
+            <forward name="failure" path="/jsp/failure.jsp" />
+        </action>
+
+        <action path="/UserAction" input="/jsp/login.jsp" name="UserForm"  parameter="method" scope="session" type="com.magnolia.struts.action.UserAction">
+            <forward name="success" path="/jsp/dispatchersuccess.jsp" />
+        </action>
+ 
+        <action path="/DynaLogin" input="/dynalogin.jsp" name="DynaLoginForm"  scope="session" type="com.magnolia.struts.action.DyanLoginAction">
+            <forward name="success" path="/jsp//dynasuccess.jsp" />
+            <forward name="failure" path="/jsp/dynafailure.jsp" />
+        </action>      		
+
+
+        <action path="/ValidateLogin" input="/jsp/validatelogin.jsp" name="ValidateLoginForm"  scope="session" type="com.magnolia.struts.action.ValidateLoginAction">
+            <forward name="success" path="/jsp/validatesuccess.jsp" />
+            <forward name="failure" path="/jsp/validatefailure.jsp" />
+        </action>
+                		
+         <action path="/Link" parameter="method" type="com.magnolia.struts.action.LinkAction">
+            <forward name="friends" path="friends"/>
+            <forward name="office" path="office"/>
+        </action>      		
+	</action-mappings>
+
+	<controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+ 	
+	<message-resources parameter="resources.messages" />
+		
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
+    </plug-in>
+
+ 		
+<plug-in className="org.apache.struts.tiles.TilesPlugin" >
+    <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />
+    <set-property property="moduleAware" value="true" />
+</plug-in>
+
+</struts-config>
